@@ -4,17 +4,25 @@ const router = express.Router()
 
 const data = require('./json/postdata.json')
 
-router.get('/my-json', (req, res) => {
-    // any function added
-    res.send(data)
+const User = require('./Schema/userSchema')
+
+router.get('/all-users', async (req, res) => {
+    const allData = await User.find({})
+    res.send(allData)
 })
 
-router.post('/add-data', (req, res) => {
-    const abc = [];
-    abc.push(req.body)
-    // any function added
+router.post('/add-data', async (req, res) => {
+    console.log('req.body::: ', req.body);
+    const { nameOfStd, emailOfStd, phoneOfStd } = req.body
 
-    res.send(abc)
+    const addUser = await User.create({
+        name: nameOfStd,
+        email: emailOfStd,
+        phone: phoneOfStd,
+        password: req.body.passwordOfStd
+    })
+
+    res.send(addUser)
 })
 
 module.exports = router
