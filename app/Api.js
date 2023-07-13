@@ -1,28 +1,28 @@
 const express = require('express');
-const app = express();
 const router = express.Router()
 
-const data = require('./json/postdata.json')
+const Users = require('./Schema/userSchema')
 
-const User = require('./Schema/userSchema')
+router.post('/Add-data', async (req, res) => {
+    console.log(req.body);
+    const { nameOfStd, emailOfStd, passwordOfStd } = req.body
 
-router.get('/all-users', async (req, res) => {
-    const allData = await User.find({})
-    res.send(allData)
-})
-
-router.post('/add-data', async (req, res) => {
-    console.log('req.body::: ', req.body);
-    const { nameOfStd, emailOfStd, phoneOfStd } = req.body
-
-    const addUser = await User.create({
+    const addUsers = await Users.create({
         name: nameOfStd,
         email: emailOfStd,
-        phone: phoneOfStd,
-        password: req.body.passwordOfStd
+        password: passwordOfStd
     })
+    res.send(addUsers)
+})
 
-    res.send(addUser)
+router.delete('/delete/:id', async (req, res) => {
+    const deleteData = await Users.findByIdAndDelete(req.params.id)
+    if (deleteData) {
+        res.send({ massage: "Data Delete..." })
+    } else {
+        res.send({ massage: "User Not fond..." })
+    }
 })
 
 module.exports = router
+
