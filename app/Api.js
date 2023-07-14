@@ -5,14 +5,20 @@ const Users = require('./Schema/userSchema')
 
 router.post('/Add-data', async (req, res) => {
     console.log(req.body);
-    const { nameOfStd, emailOfStd, passwordOfStd } = req.body
+    const { name, email, password, phone } = req.body
 
     const addUsers = await Users.create({
-        name: nameOfStd,
-        email: emailOfStd,
-        password: passwordOfStd
+        name: name,
+        email: email,
+        password: password,
+        phone: phone
     })
     res.send(addUsers)
+})
+
+router.get('/all', async (req, res) => {
+    const aaa = await Users.find({});
+    return res.send(aaa);
 })
 
 router.delete('/delete/:id', async (req, res) => {
@@ -24,5 +30,14 @@ router.delete('/delete/:id', async (req, res) => {
     }
 })
 
+router.get('/edit/:id', async (req, res) => {
+    const editData = await Users.findById(req.params.id)
+    return res.send(editData);
+})
+
+router.put('/update', async (req, res) => {
+    const updateData = await Users.findByIdAndUpdate(req.body._id, req.body)
+    return res.send(updateData)
+})
 module.exports = router
 
