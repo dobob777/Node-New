@@ -36,7 +36,9 @@ router.get('/edit/:id', async (req, res) => {
 })
 
 router.put('/update', async (req, res) => {
-    const updateData = await Users.findByIdAndUpdate(req.body._id, req.body)
+    const updateData = await Users.findByIdAndUpdate(
+        req.body._id, req.body
+    )
     return res.send(updateData)
 })
 module.exports = router
